@@ -5,3 +5,10 @@
 <div id="scatterData">
 
 </div>
+<div id="api">
+  <button (click)="loadData()">Load Data</button>
+  <ul *ngFor="let bike of returnedBikes">
+    <li>{{ bike.title}}</li>
+    <li>{{ bike.id}}</li>
+  </ul>
+</div>
