@@ -18,35 +18,58 @@ export class ScatterplotComponent implements OnInit {
   ngOnInit() {
    let d3 = this.d3; // <-- for convenience use a block scope variable
    let d3ParentElement: Selection<any, any, any, any>; // <-- Use the Selection interface (very basic here for illustration only)
-
+   let w = 500;
+   let h = 100;
+   let barPadding = 1;
+   let data = this.data;
 
    if (this.parentNativeElement !== null) {
 
      d3ParentElement = d3.select(this.parentNativeElement); // <-- use the D3 select method
      // Do more D3 things
-    d3.select('body').selectAll('p')
-        .data(this.data)
-        .enter()
-        .append('p')
-        .text('I contain something!')
-        .style("color", function(d) {
-            if (d > 15) {   //Threshold of 15
-                return "red";
-            } else {
-                return "black";
-            }
-        });
+     var svg = d3.select("#output")
+       .append("svg")
+       .attr("width", w)
+       .attr("height", h);
    }
 
-   d3.select('#output').selectAll('div')
+
+
+
+    svg.selectAll("rect")
       .data(this.data)
       .enter()
-      .append('div')
-      .attr('class', 'bar')
-      .style('height', function(d:any) {
-        console.log(typeof d)
-        return d*5+'px';
+      .append("rect")
+      .attr("x", function(d:any, i:any) {
+        return i * (w / data.length);
+      })
+      .attr("y", function(d:any) {
+        return h - (d*4);
+      })
+      .attr("width", w / data.length - barPadding)
+      .attr("height", function(d:any) {
+        return d * 4;
+      })
+      .attr("fill", function(d:any) {
+        return "rgb(0, 0, " + (d * 10) + ")";
       });
-  }
 
+    svg.selectAll('text')
+     .data(data)
+     .enter()
+     .append('text')
+     .text(function(d:any) {
+       return d;
+     })
+     .attr("x", function(d:any, i:any) {
+        return i * (w / data.length) + (w / data.length - barPadding) / 2;
+    })
+    .attr("y", function(d:any) {
+      return h - (d * 4) + 14;  //15 is now 14
+    })
+     .attr("font-family", "sans-serif")
+     .attr("font-size", "11px")
+     .attr("fill", "white")
+     .attr("text-anchor", "middle");
+    }
 }
