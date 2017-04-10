@@ -14,4 +14,20 @@ export class AppComponent {
   saveData(data) {
     this.data = data;
   }
+
+  scatterData: any = [
+                  [ 5,     20 ],
+                  [ 480,   90 ],
+                  [ 250,   50 ],
+                  [ 100,   33 ],
+                  [ 330,   95 ],
+                  [ 410,   12 ],
+                  [ 475,   44 ],
+                  [ 25,    67 ],
+                  [ 85,    21 ],
+                  [ 220,   88 ]
+              ];
+  saveScatterData(scatterData) {
+    this.scatterData = scatterData;
+  }
 }

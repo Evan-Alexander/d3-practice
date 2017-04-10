@@ -10,6 +10,7 @@ export class ScatterplotComponent implements OnInit {
   private d3: D3; // <-- Define the private member which will hold the d3 reference
   private parentNativeElement: any;
   @Input() data: any;
+  @Input() scatterData: any;
   constructor(element: ElementRef, d3Service: D3Service) { // <-- pass the D3 Service into the constructor
      this.d3 = d3Service.getD3(); // <-- obtain the d3 object from the D3 Service
      this.parentNativeElement = element.nativeElement;
@@ -22,6 +23,7 @@ export class ScatterplotComponent implements OnInit {
    let h = 100;
    let barPadding = 1;
    let data = this.data;
+   let scatterData = this.scatterData;
 
    if (this.parentNativeElement !== null) {
 
@@ -71,5 +73,42 @@ export class ScatterplotComponent implements OnInit {
      .attr("font-size", "11px")
      .attr("fill", "white")
      .attr("text-anchor", "middle");
-    }
+
+    var svg2 = d3.select("#scatterData")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+
+      svg2.selectAll("circle")
+        .data(scatterData)
+        .enter()
+        .append("circle")
+      .attr("cx", function(d) {
+        return d[0];
+        })
+        .attr("cy", function(d) {
+          return d[1];
+        })
+        .attr("r", function(d) {
+          return Math.sqrt(h -d[1]);
+        });
+
+        svg2.selectAll("text")
+          .data(scatterData)
+          .enter()
+          .append("text")
+          .text(function(d) {
+            return d[0] + "," + d[1];
+          })
+          .attr("x", function(d) {
+            return d[0];
+          })
+          .attr("y", function(d) {
+            return d[1];
+          })
+          .attr("font-family", "sans-serif")
+          .attr("font-size", "11px")
+          .attr("fill", "red");
+  }
+
 }
